@@ -1,15 +1,35 @@
-<!DOCTYPE html>
-<html lang="en">
+<?php
 
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Edusogno</title>
-</head>
+include_once("router.php");
 
-<body>
+session_start();
 
-</body>
 
-</html>
+$router = new Router;
+if (!$_SESSION["jwtToken"]) {
+    if (!isset($_GET['page'])) {
+        $_GET['page'] = "login";
+    }
+    if ($_GET['page'] == "register") {
+        $router->get_register();
+    }
+    if ($_GET['page'] == "login")
+        $router->get_login();
+    // $_SESSION["loginToken"] = "ahmed";
+}
+if (isset($_SESSION["jwtToken"])) {
+
+    if (!isset($_GET['page'])) {
+        $_GET['page'] = "dashboard";
+    }
+    if (isset($_GET['page'])) {
+        if ($_GET['page'] == "dashboard")
+            $router->get_dashboard();
+
+        if ($_GET['page'] == "login")
+            $router->get_login();
+
+        if ($_GET['page'] == "events")
+            $router->get_events();
+    }
+}
